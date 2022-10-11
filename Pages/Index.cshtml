@@ -9,7 +9,25 @@
     <ul>
         @foreach (var item in Model.Subjects)
         {
-            <li>@item.SubjectName</li>
+            <li>@item.SubjectName
+                <ul>
+                    @foreach (var student in item.StudentsEnrolled)
+                    {
+                        <li>@student.Name</li>
+                    }
+                </ul>
+            </li>
         }
+    </ul>
+    <ul>
+        <li>
+            @Model.Subject.SubjectName
+            <ul>
+                @foreach (var student in Model.Subject.StudentsEnrolled)
+                {
+                    <li>@student.Name</li>
+                }
+            </ul>
+        </li>
     </ul>
 </div>

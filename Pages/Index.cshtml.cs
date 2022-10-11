@@ -11,6 +11,7 @@ namespace WebEFmn.Pages
         private readonly SchoolDbContext dbContext;
 
         public IEnumerable<Subject> Subjects { get; set; }
+        public Subject Subject { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, SchoolDbContext dbContext)
         {
@@ -20,8 +21,11 @@ namespace WebEFmn.Pages
 
         public void OnGet()
         {
-            Subjects = dbContext.Subjects.AsEnumerable();
-        }
+            Subjects = dbContext.Subjects.Where(s => s.SubjectId < 4).Include(s => s.StudentsEnrolled).AsEnumerable();
+
+            Subject = dbContext.Subjects.Where(s => s.SubjectId == 2).SingleOrDefault();
+            dbContext.Entry(Subject).Collection(s => s.StudentsEnrolled).Load();
+    }
         public void OnGetAdd() //?handler=Add
         {
             dbContext.Subjects.Add(new Subject { SubjectName = "AAA" });
